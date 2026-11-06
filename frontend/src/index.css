@@ -1,0 +1,393 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   DESIGN TOKENS — Deep Teal × Champagne (Refined Glass).
+   Single source of truth for the official DocuGuard AI theme.
+   ============================================================ */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Official Deep Teal × Champagne — Refined Glass tokens */
+  --color-primary: #174c4a;        /* Primary / Deep Teal */
+  --color-primary-hover: #123d3b;  /* Hover Primary */
+  --color-secondary: #477c76;      /* Secondary / Muted Teal */
+  --color-champagne: #d5b77a;      /* Accent / Champagne (sparingly used) */
+  --color-champagne-soft: #f5eedf; /* Soft Champagne tint */
+  --color-border: #e3e0d6;         /* Border */
+
+  /* Mapped semantic & utility tokens */
+  --color-navy: #263331;           /* Charcoal structural anchor */
+  --color-forest-2: #123d3b;       /* Hover Primary / Deepened Teal */
+  --color-brand: #174c4a;          /* Deep Teal — primary actions, active */
+  --color-brand-2: #477c76;        /* Muted Teal — secondary accent */
+  --color-sage: #477c76;           /* Muted Teal — secondary accent */
+  --color-mint: #d4e3dd;           /* Soft Teal highlight */
+  --color-brand-soft: #eaf1ed;     /* Subtle Teal Surface */
+  --color-canvas: #f4f1e9;         /* Background / Warm Porcelain */
+  --color-paper: #fffefa;          /* Surface / Soft Ivory */
+
+  /* Ink */
+  --color-ink: #263331;            /* Primary Text / Charcoal */
+  --color-ink-2: #43524e;          /* High-contrast secondary body text */
+  --color-ink-3: #64716d;          /* Secondary Text */
+
+  /* Independent semantic finding categories */
+  --color-ok: #1b6b4a;
+  --color-ok-soft: #e1f2ea;
+  --color-partial: #8a5a10;
+  --color-partial-soft: #f7ebd2;
+  --color-missing: #a63a35;
+  --color-missing-soft: #f7e2e0;
+  --color-na: #5c6864;
+  --color-na-soft: #e9e7df;
+  --color-review: #35597a;
+  --color-review-soft: #e4eef5;
+
+  /* Independent semantic severity tokens */
+  --color-sev-info: #64716d;
+  --color-sev-info-soft: #f4f1e9;
+  --color-sev-minor: #6e521c;
+  --color-sev-minor-soft: #f5eedf;
+  --color-sev-major: #7c3e0e;
+  --color-sev-major-soft: #f9e8d2;
+  --color-sev-critical: #8c2622;
+  --color-sev-critical-soft: #f7e2e0;
+
+  --radius-glass: 1.5rem;
+  --radius-control: 0.875rem;
+  --text-micro: 0.75rem;
+  --shadow-float: 0 24px 48px -18px rgb(23 76 74 / 0.28);
+}
+
+:root {
+  /* Refined Glass material tokens: restrained translucency & thin low-contrast borders */
+  --glass-bg: linear-gradient(150deg, rgb(255 254 250 / 0.78), rgb(255 254 250 / 0.62) 62%, rgb(234 241 237 / 0.48));
+  --glass-bg-strong: linear-gradient(150deg, rgb(255 254 250 / 0.88), rgb(255 254 250 / 0.76) 65%, rgb(234 241 237 / 0.62));
+  --glass-border: rgb(227 224 214 / 0.88);
+  --glass-edge: rgb(71 124 118 / 0.2);
+  --glass-blur: 16px;
+  --surface-solid: rgb(255 254 250 / 0.97);
+  --glass-shadow:
+    0 1px 0 rgb(255 254 250 / 0.92) inset,           /* soft ivory top-edge highlight */
+    0 -1px 0 rgb(227 224 214 / 0.45) inset,          /* warm porcelain bottom rim */
+    0 2px 6px -2px rgb(38 51 49 / 0.05),
+    0 20px 40px -22px rgb(23 76 74 / 0.16);
+  --sidebar-bg: linear-gradient(168deg, rgb(23 76 74 / 0.95), rgb(18 61 59 / 0.97) 52%, rgb(14 46 44 / 0.99));
+
+  /* Custom Scrollbar tokens (Deep Teal × Champagne) */
+  --scrollbar-thumb: #9bb8ae;
+  --scrollbar-thumb-hover: #477c76;
+  --scrollbar-thumb-active: #174c4a;
+  --scrollbar-track: rgb(244 241 233 / 0.55);
+}
+
+@layer base {
+  /* Grids default to one shrinkable column so wide content can never force horizontal page scroll. */
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  /* Tables are the containing block for their sr-only text, so it is clipped by the scroll wrapper instead of widening the page. */
+  table { position: relative; }
+  /* Keyboard focus must stay visible on the dark sidebar too. */
+  aside :focus-visible { outline-color: var(--color-champagne); }
+
+  /* Refined custom scrollbars across main viewport and scrollable containers (Firefox + Chromium/WebKit) */
+  *,
+  html,
+  body {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: 9999px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: background-color 0.2s ease;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+  }
+  *::-webkit-scrollbar-thumb:active {
+    background-color: var(--scrollbar-thumb-active);
+  }
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  aside,
+  aside * {
+    scrollbar-color: rgb(255 254 250 / 0.28) transparent;
+  }
+  aside *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  aside *::-webkit-scrollbar-thumb {
+    background-color: rgb(255 254 250 / 0.26);
+  }
+  aside *::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(213 183 122 / 0.55);
+  }
+
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: var(--color-canvas);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    min-height: 100vh;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+  }
+  ::selection {
+    background: var(--color-brand-soft);
+    color: var(--color-ink);
+  }
+}
+
+@layer components {
+  /* Liquid Glass Motion Background:
+     Multi-layered translucent organic shapes over Warm Porcelain (#F4F1E9)
+     that slowly morph and drift behind all routes without restarting on navigation. */
+  .app-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+    contain: strict;
+    background:
+      radial-gradient(72rem 48rem at 96% -6%, rgb(71 124 118 / 0.16), transparent 64%),
+      radial-gradient(56rem 42rem at -4% 26%, rgb(23 76 74 / 0.12), transparent 64%),
+      radial-gradient(52rem 38rem at 74% 106%, rgb(213 183 122 / 0.14), transparent 64%),
+      linear-gradient(180deg, rgb(255 254 250 / 0.45) 0%, transparent 45%, rgb(234 241 237 / 0.35) 100%),
+      var(--color-canvas);
+  }
+  .liquid-orb {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 62% 38% 46% 54% / 54% 48% 52% 46%;
+    transform: translate3d(0, 0, 0);
+  }
+  /* Liquid Layer A1: Deep Teal & Muted Teal primary current (34s cycle, pre-softened gradient) */
+  .liquid-orb-teal-a {
+    width: 54rem;
+    height: 44rem;
+    top: -12%;
+    left: 12%;
+    background:
+      radial-gradient(
+        ellipse 50% 50% at 44% 46%,
+        rgb(71 124 118 / 0.24) 0%,
+        rgb(23 76 74 / 0.15) 34%,
+        rgb(234 241 237 / 0.28) 58%,
+        rgb(234 241 237 / 0.1) 74%,
+        transparent 88%
+      );
+    animation: liquid-drift-a 34s ease-in-out infinite alternate;
+  }
+  /* Liquid Layer A2: Muted Teal & Subtle Teal counter-current (39s cycle, desynchronized) */
+  .liquid-orb-teal-b {
+    width: 48rem;
+    height: 40rem;
+    bottom: -16%;
+    left: -8%;
+    border-radius: 48% 52% 60% 40% / 44% 58% 42% 56%;
+    background:
+      radial-gradient(
+        ellipse 50% 50% at 52% 48%,
+        rgb(71 124 118 / 0.22) 0%,
+        rgb(23 76 74 / 0.12) 36%,
+        rgb(255 254 250 / 0.32) 60%,
+        rgb(255 254 250 / 0.1) 76%,
+        transparent 88%
+      );
+    animation: liquid-drift-b 39s ease-in-out -11s infinite alternate;
+  }
+  /* Liquid Layer B1: Restrained Champagne & Champagne-Soft warm highlight (29s cycle) */
+  .liquid-orb-champagne {
+    width: 44rem;
+    height: 36rem;
+    top: 26%;
+    right: -8%;
+    border-radius: 56% 44% 42% 58% / 52% 40% 60% 48%;
+    background:
+      radial-gradient(
+        ellipse 50% 50% at 48% 50%,
+        rgb(213 183 122 / 0.2) 0%,
+        rgb(245 238 223 / 0.42) 38%,
+        rgb(255 254 250 / 0.26) 62%,
+        rgb(245 238 223 / 0.08) 76%,
+        transparent 88%
+      );
+    animation: liquid-drift-c 29s ease-in-out -7s infinite alternate;
+  }
+  /* Liquid Layer B2: Soft Ivory & Subtle Teal translucent refraction lens (26s cycle) */
+  .liquid-orb-ivory {
+    width: 46rem;
+    height: 38rem;
+    top: 18%;
+    left: 30%;
+    border-radius: 45% 55% 52% 48% / 58% 42% 56% 44%;
+    background:
+      radial-gradient(
+        ellipse 50% 50% at 50% 50%,
+        rgb(255 254 250 / 0.64) 0%,
+        rgb(234 241 237 / 0.38) 40%,
+        rgb(213 183 122 / 0.09) 62%,
+        rgb(255 254 250 / 0.08) 76%,
+        transparent 88%
+      );
+    animation: liquid-drift-d 26s ease-in-out -15s infinite alternate;
+  }
+  /* Layer 4: Subtle translucent liquid-glass caustic veil */
+  .liquid-sheen {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(62% 52% at 48% 44%, rgb(255 254 250 / 0.26), transparent 72%),
+      linear-gradient(135deg, rgb(255 254 250 / 0.22) 0%, transparent 38%, rgb(234 241 237 / 0.18) 68%, rgb(245 238 223 / 0.15) 100%);
+  }
+  .glass,
+  .glass-strong {
+    position: relative;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(135%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(135%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: var(--radius-glass);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .glass-strong {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(20px) saturate(135%);
+    -webkit-backdrop-filter: blur(20px) saturate(135%);
+  }
+  /* Soft diagonal light reflection across the upper-left of glass */
+  .glass::after,
+  .glass-strong::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(125deg, rgb(255 254 250 / 0.38) 0%, rgb(255 254 250 / 0.06) 28%, transparent 46%);
+    mask: linear-gradient(#000, transparent 85%);
+  }
+  /* Near-opaque Soft Ivory: tables, evidence and dense document data */
+  .surface {
+    background: var(--surface-solid);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 1px 0 rgb(255 254 250 / 0.95) inset, 0 12px 26px -18px rgb(23 76 74 / 0.16);
+    border-radius: var(--radius-glass);
+  }
+  /* Nested glass inside glass: lighter tier */
+  .glass-inset {
+    background: rgb(255 254 250 / 0.68);
+    border: 1px solid rgb(227 224 214 / 0.8);
+    box-shadow: 0 1px 0 rgb(255 254 250 / 0.85) inset;
+    border-radius: 1rem;
+  }
+  .glass-sheen { overflow: hidden; }
+  .eyebrow {
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+  .lift { transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.2s ease; }
+  .lift:hover { transform: translateY(-2px); box-shadow: 0 1px 0 rgb(255 254 250 / 0.95) inset, 0 18px 30px -18px rgb(23 76 74 / 0.24); }
+  /* Text-editor caret: zero layout width so blinking/typing never shifts or re-wraps the headline */
+  .caret {
+    position: relative;
+    display: inline-block;
+    width: 0;
+    height: 0.9em;
+    vertical-align: -0.08em;
+  }
+  .caret::before {
+    content: '';
+    position: absolute;
+    left: 1px;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    border-radius: 1px;
+    background: var(--color-brand);
+    animation: blink 1s ease-in-out infinite;
+  }
+}
+
+/* Slow organic liquid-glass motion: GPU-composited transform & opacity only (26s–39s cycles) */
+@keyframes liquid-drift-a {
+  0%   { transform: translate3d(0, 0, 0) scale(1, 1) rotate(0deg); opacity: 0.92; }
+  50%  { transform: translate3d(7rem, 5rem, 0) scale(1.09, 0.93) rotate(7deg); opacity: 1; }
+  100% { transform: translate3d(-9rem, 9rem, 0) scale(0.95, 1.08) rotate(-6deg); opacity: 0.88; }
+}
+@keyframes liquid-drift-b {
+  0%   { transform: translate3d(0, 0, 0) scale(1, 1) rotate(0deg); opacity: 0.88; }
+  50%  { transform: translate3d(11rem, -6rem, 0) scale(1.11, 0.94) rotate(-8deg); opacity: 0.98; }
+  100% { transform: translate3d(5rem, -11rem, 0) scale(0.94, 1.09) rotate(6deg); opacity: 0.86; }
+}
+@keyframes liquid-drift-c {
+  0%   { transform: translate3d(0, 0, 0) scale(1, 1) rotate(0deg); opacity: 0.85; }
+  50%  { transform: translate3d(-8rem, -6rem, 0) scale(0.93, 1.08) rotate(9deg); opacity: 0.96; }
+  100% { transform: translate3d(-12rem, 7rem, 0) scale(1.07, 0.94) rotate(-7deg); opacity: 0.84; }
+}
+@keyframes liquid-drift-d {
+  0%   { transform: translate3d(0, 0, 0) scale(1, 1) rotate(0deg); opacity: 0.82; }
+  50%  { transform: translate3d(-6rem, 7rem, 0) scale(1.08, 0.95) rotate(-6deg); opacity: 0.96; }
+  100% { transform: translate3d(8rem, -5rem, 0) scale(0.96, 1.07) rotate(8deg); opacity: 0.86; }
+}
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes float-y {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50% { transform: translateY(-10px) rotate(var(--r, 0deg)); }
+}
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+.float { animation: float-y 7s ease-in-out infinite; }
+.skeleton {
+  background: linear-gradient(90deg, rgb(38 51 49 / 0.05) 25%, rgb(38 51 49 / 0.1) 50%, rgb(38 51 49 / 0.05) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: 0.75rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .float, .skeleton { animation: none; }
+  .liquid-orb { animation: none !important; transform: none !important; }
+  .caret::before { animation: none; }
+  .lift:hover { transform: none; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .glass-strong { background: var(--surface-solid); backdrop-filter: none; }
+  .liquid-orb { opacity: 0.35; }
+}
+
+/* Illustrative scan line used on the processing screen */
+@keyframes scan { from { top: 0; } to { top: calc(100% - 3px); } }
+.scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--color-brand), transparent);
+  box-shadow: 0 0 12px rgb(23 76 74 / 0.35);
+  animation: scan 2.2s ease-in-out infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) { .scanline { animation: none; top: 50%; } }

@@ -1,0 +1,12 @@
+{
+  "title": "DocuGuard AI — Pemeriksaan Laporan Insiden TI",
+  "language": "id",
+  "description": "Membantu tim TI memeriksa laporan insiden terhadap SOP dan template, mengidentifikasi celah kepatuhan, serta memandu tinjauan manual secara konsisten.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
